@@ -2,7 +2,7 @@
 
 
 <p align="center">
-  <img width="256" height="256" src="https://github.com/waldirborbajr/glink/blob/assets/glink-icon.png" />
+  <img width="256" height="256" src="https://github.com/waldirborbajr/glink/blob/assets/glink.png" />
 </p>
 
 <h1 align="center">glink - GOLang symlink manager</h1>
