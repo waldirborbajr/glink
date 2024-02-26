@@ -15,5 +15,5 @@ func main() {
 	if err := app.Run(os.Args); err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println("glink v 0.1.0")
+	fmt.Println("glink v 0.1.1")
 }
