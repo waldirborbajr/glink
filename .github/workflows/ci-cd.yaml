@@ -57,12 +57,12 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
 
-  # check_brew:
-  #   name: Check Brew Tap
-  #   needs: goreleaser
-  #   runs-on: macos-latest
-  #   steps:
-  #     - name: Install with brew
-  #       run: |
-  #         brew install joshmedeski/sesh/sesh
+  check_brew:
+    name: Check Brew Tap
+    needs: goreleaser
+    runs-on: macos-latest
+    steps:
+      - name: Install with brew
+        run: |
+          brew install waldirborbajr/glink/glink
   # TODO: assert the latest version was installed
