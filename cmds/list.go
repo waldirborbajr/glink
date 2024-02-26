@@ -7,8 +7,8 @@ import (
 func List() *cli.Command {
 	return &cli.Command{
 		Name:                   "list",
-		Aliases:                []string{"l"},
-		Usage:                  "List sessions",
+		Aliases:                []string{"s"},
+		Usage:                  "List symlinks created",
 		UseShortOptionHandling: true,
 		Flags: []cli.Flag{
 			&cli.BoolFlag{
