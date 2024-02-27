@@ -6,10 +6,10 @@ import (
 	"fmt"
 	"io"
 	"io/fs"
-	"log"
 	"os"
 
 	cli "github.com/urfave/cli/v2"
+	"github.com/waldirborbajr/glink/internal/util"
 )
 
 func Link() *cli.Command {
@@ -66,7 +66,7 @@ func createSymlink() {
 				for _, file := range filesFromDiretory {
 					err := os.Symlink(newSourcePath+"/"+file.Name(), newUserHomeDirectory+"/"+file.Name())
 					if err != nil {
-						fmt.Println("Error creating symlink ", file.Name())
+						util.ExitWithError("Error creating symlink", err)
 					}
 				}
 
@@ -74,7 +74,7 @@ func createSymlink() {
 
 				err := os.Symlink(linkSourcePath+"/"+file.Name(), userHomeDir+"/"+file.Name())
 				if err != nil {
-					fmt.Println("Error creating symlink ", file.Name())
+					util.ExitWithError("Error creating symlink", err)
 				}
 			}
 			continue
@@ -82,7 +82,7 @@ func createSymlink() {
 
 		err := os.Symlink(linkSourcePath+"/"+file.Name(), userHomeDir+"/"+file.Name())
 		if err != nil {
-			fmt.Println("Error creating symlink ", file.Name())
+			util.ExitWithError("Error creating symlink", err)
 		}
 	}
 }
@@ -106,7 +106,7 @@ func isTargetExists(target string) bool {
 func userHomeDir() string {
 	home, err := os.UserHomeDir()
 	if err != nil {
-		log.Fatal("Unable to get home directory")
+		util.ExitWithError("Unable to get $HOME directory", err)
 	}
 
 	return home
@@ -116,7 +116,7 @@ func userHomeDir() string {
 func sourceLinkPath() string {
 	linkSourcePath, err := os.Getwd()
 	if err != nil {
-		log.Fatal("Unable to get current directory")
+		util.ExitWithError("Unable to get current directory", err)
 	}
 
 	return linkSourcePath
@@ -126,7 +126,7 @@ func sourceLinkPath() string {
 func listFilestoLink(sourcePath string) []fs.DirEntry {
 	files, err := os.ReadDir(sourcePath)
 	if err != nil {
-		log.Fatal("Unable to get a list of files")
+		util.ExitWithError("Unable to get a list of files", err)
 	}
 
 	return files
@@ -145,7 +145,7 @@ func ignoreList(sourcePath string) []string {
 
 	fileToIgnore, err := os.OpenFile(ignoreFile, os.O_RDONLY, os.ModePerm)
 	if err != nil {
-		log.Fatal("Unable to read .glink-ignore file")
+		util.ExitWithError("Unable to read .glink-ignore file", err)
 	}
 
 	defer fileToIgnore.Close()
@@ -158,7 +158,7 @@ func ignoreList(sourcePath string) []string {
 				break
 			}
 
-			log.Fatalf("read file line error: %v", err)
+			util.ExitWithError("read file line error: %v", err)
 		}
 		_ = line // GET the line string
 	}
