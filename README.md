@@ -19,6 +19,13 @@
 
 **BETA:** This project is in active development. Please check out the issues and contribute if you're interested in helping out.
 
+## glink
+`tl;dr:` `glink`, a.k.a GOlang Symbolic Link (symlink), is an open-source software built-in with the main aim of being a personal alternative to **GNU Stow**.
+
+As `GNU Stow`, `glink` is a symlink farm manager which takes distinct packages of software and/or data located in separate directories on the filesystem, and makes them appear to be installed in the same place. 
+
+With `glink` it is eeasy to track and manage configuration files in the user's home directory, especially when coupled with version control systems. 
+
 ## How to install
 
 ### Homebrew
