@@ -8,7 +8,7 @@
 <h1 align="center">glink - GOLang symlink manager</h1>
 
 <p align="center">
-  <a href="https://github.com/waldirborbajr/glink/actions/workflows/ci-cd.yml">
+  <a href="https://github.com/waldirborbajr/glink/actions/workflows/ci-cd.yaml">
     <img alt="tests" src="https://github.com/waldirborbajr/glink/actions/workflows/ci-cd.yml/badge.svg" />
   </a>
   <a href="https://goreportcard.com/report/github.com/waldirborbajr/glink">
