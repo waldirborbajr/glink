@@ -50,9 +50,7 @@ This will download and install the latest version of glink. Make sure that your 
 
 ## How to use
 
-### glink for symblinks
-
-#### to link 
+The main goal of `glink` is to be as simple as that, `easy peasy lemon squeezy`, with few commands and straight to the target.
 
 ```sh
 # To create a link to $HOMR
@@ -80,7 +78,7 @@ You can add files/directories to ignore list, so when execute `glink` the conten
 touch .glink-ignore
 ```
 
-### `Contributing to glink`
+## Contributing to glink
 
 If you are interested in contributing to `glink`, we would love to have your help! You can start by checking out the [ open issues ](https://github.com/waldirborbajr/glink/issues) on our GitHub repository to see if there is anything you can help with. You can also suggest new features or feel free to create a new feature by opening a new issue.
 
