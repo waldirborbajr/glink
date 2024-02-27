@@ -52,8 +52,24 @@ This will download and install the latest version of glink. Make sure that your 
 
 ### glink for symblinks
 
+#### to link 
+
 ```sh
-glink .... #TODO
+# To create a link to $HOMR
+glink l
+
+# To force overwrite existing link : **TODO** not implemented
+glink f -f
+
+# To remove (kill) all symblinks : **TODO** not implemented
+glink k
+
+# To remove a specific symblinks : **TODO** not implemented
+glink r symlink-name
+
+
+# To print all symlink created : **TODO** not implemented
+glink p
 ```
 
 ## .glink-ignore`
