@@ -50,11 +50,56 @@ func createSymlink() {
 			continue
 		}
 
+		// If it is a directory, must validate if exists on target
+		// Existing must enter into and create symlink from the content inside
+		// Not existing, create directory as symlink
+		if isDirectory(file.Name()) {
+
+			newUserHomeDirectory := userHomeDir + "/" + file.Name()
+
+			if isTargetExists(newUserHomeDirectory) {
+
+				newSourcePath := sourceLinkPath() + "/" + file.Name()
+
+				filesFromDiretory := listFilestoLink(newSourcePath)
+
+				for _, file := range filesFromDiretory {
+					err := os.Symlink(newSourcePath+"/"+file.Name(), newUserHomeDirectory+"/"+file.Name())
+					if err != nil {
+						fmt.Println("Error creating symlink ", file.Name())
+					}
+				}
+
+			} else {
+
+				err := os.Symlink(linkSourcePath+"/"+file.Name(), userHomeDir+"/"+file.Name())
+				if err != nil {
+					fmt.Println("Error creating symlink ", file.Name())
+				}
+			}
+			continue
+		}
+
 		err := os.Symlink(linkSourcePath+"/"+file.Name(), userHomeDir+"/"+file.Name())
 		if err != nil {
 			fmt.Println("Error creating symlink ", file.Name())
 		}
 	}
+}
+
+// isDirectory determines if a file represented
+// by `path` is a directory or not
+func isDirectory(path string) bool {
+	fileInfo, _ := os.Stat(path)
+
+	return fileInfo.IsDir()
+}
+
+// Validate if diretory exists on target symlink
+func isTargetExists(target string) bool {
+	_, err := os.Stat(target)
+
+	return !errors.Is(err, os.ErrNotExist)
 }
 
 // Get user home path
@@ -88,6 +133,7 @@ func listFilestoLink(sourcePath string) []fs.DirEntry {
 }
 
 // Do not create symlink from .glink-ignore
+// TODO implement ignore list
 func ignoreList(sourcePath string) []string {
 	_, err := os.Stat(sourcePath + "/.glink-ignore")
 
