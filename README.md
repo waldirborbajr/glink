@@ -80,6 +80,12 @@ You can add files/directories to ignore list, so when execute `glink` the conten
 touch .glink-ignore
 ```
 
+### `Contributing to glink`
+
+If you are interested in contributing to `glink`, we would love to have your help! You can start by checking out the [ open issues ](https://github.com/waldirborbajr/glink/issues) on our GitHub repository to see if there is anything you can help with. You can also suggest new features or feel free to create a new feature by opening a new issue.
+
+To contribute code to `glink`, you will need to fork the repository and create a new branch for your changes. Once you have made your changes, you can submit a pull request for them to be reviewed and merged into the main codebase.
+
 ## Contributors
 
 <a href="https://github.com/waldirborbajr/glink/graphs/contributors">
