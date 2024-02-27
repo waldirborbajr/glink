@@ -1,6 +1,4 @@
 
-
-
 <p align="center">
   <img width="256" height="256" src="./assets/glink.png" />
 </p>
@@ -9,7 +7,7 @@
 
 <p align="center">
   <a href="https://github.com/waldirborbajr/glink/actions/workflows/ci-cd.yaml">
-    <img alt="tests" src="https://github.com/waldirborbajr/glink/actions/workflows/ci-cd.yml/badge.svg" />
+    <img alt="tests" src="https://github.com/waldirborbajr/glink/actions/workflows/ci-cd.yaml/badge.svg" />
   </a>
   <a href="https://goreportcard.com/report/github.com/waldirborbajr/glink">
     <img alt="goreport" src="https://goreportcard.com/badge/github.com/waldirborbajr/glink" />
