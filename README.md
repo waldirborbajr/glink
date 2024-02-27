@@ -56,21 +56,12 @@ This will download and install the latest version of glink. Make sure that your 
 glink .... #TODO
 ```
 
-## Recommended tmux Settings
+## .glink-ignore`
 
-I recommend you add these settings to your `tmux.conf` to have a better experience with this plugin.
-
-```sh
-#TODO
-```
-
-## Configuration
-
-You can configure glink by creating a `glink.toml` file in your `$XDG_CONFIG_HOME/glink` or `$HOME/.config/glink` directory.
+You can add files/directories to ignore list, so when execute `glink` the content will no be linked.
 
 ```sh
-mkdir -p ~/.config/glink
-touch glink.toml
+touch .glink-ignore
 ```
 
 ## Contributors
