@@ -1,8 +1,13 @@
 build-dev:
-	go build -o bin/glink -debug-trace=tmp/trace.json main.go
+	go mod tidy
+	GOOS=linux go build -o bin/glink -debug-trace=tmp/trace.json main.go
 
 build:
-	go build -o bin/glink -ldflags="-s -w" main.go
+	go mod tidy
+	GOOS=linux go build -o bin/glink -ldflags="-s -w" main.go
+
+lint-fix: ## 🔍 Lint & format, will try to fix errors and modify code
+	golangci-lint run --modules-download-mode=mod *.go --fix
 
 install:
 	go install ./...
