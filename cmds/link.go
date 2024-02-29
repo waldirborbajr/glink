@@ -33,20 +33,21 @@ func Link() *cli.Command {
 	}
 }
 
+// Create the Symlink for file or directory
 func createSymlink() {
 	userHomeDir := userHomeDir()
 
 	linkSourcePath := sourceLinkPath()
 
+	// TODO: implement logic to ignore files and directories
 	ignoreList(linkSourcePath)
 
 	filesToLink := listFilestoLink(linkSourcePath)
 
 	for _, file := range filesToLink {
-		fmt.Println(file)
 
 		// ignoring the .glink-ignore file
-		if file.Name() == ".glink-ignore" {
+		if file.Name() == ".glink-ignore" || file.Name() == "glink-ignore" {
 			continue
 		}
 
@@ -64,27 +65,34 @@ func createSymlink() {
 				filesFromDiretory := listFilestoLink(newSourcePath)
 
 				for _, file := range filesFromDiretory {
-					err := os.Symlink(newSourcePath+"/"+file.Name(), newUserHomeDirectory+"/"+file.Name())
-					if err != nil {
-						util.ExitWithError("Error creating symlink", err)
+					if !isTargetExists(newUserHomeDirectory + "/" + file.Name()) {
+						if err := makeSymlink(newSourcePath+"/"+file.Name(), newUserHomeDirectory+"/"+file.Name()); err != nil {
+							util.ExitWithError("Error creating symlink", err)
+						}
 					}
 				}
 
 			} else {
-
-				err := os.Symlink(linkSourcePath+"/"+file.Name(), userHomeDir+"/"+file.Name())
-				if err != nil {
+				if err := makeSymlink(linkSourcePath+"/"+file.Name(), userHomeDir+"/"+file.Name()); err != nil {
 					util.ExitWithError("Error creating symlink", err)
 				}
 			}
 			continue
 		}
 
-		err := os.Symlink(linkSourcePath+"/"+file.Name(), userHomeDir+"/"+file.Name())
-		if err != nil {
-			util.ExitWithError("Error creating symlink", err)
+		// TODO: implement check is alredy exists symlink. If exists, bypass
+
+		if !isTargetExists(userHomeDir + "/" + file.Name()) {
+			if err := makeSymlink(linkSourcePath+"/"+file.Name(), userHomeDir+"/"+file.Name()); err != nil {
+				util.ExitWithError("Error creating symlink", err)
+			}
 		}
 	}
+}
+
+// makeSymlink creates a symlink and return error
+func makeSymlink(source string, target string) error {
+	return os.Symlink(source, target)
 }
 
 // isDirectory determines if a file represented
@@ -132,8 +140,8 @@ func listFilestoLink(sourcePath string) []fs.DirEntry {
 	return files
 }
 
+// TODO: implement ignore list
 // Do not create symlink from .glink-ignore
-// TODO implement ignore list
 func ignoreList(sourcePath string) []string {
 	_, err := os.Stat(sourcePath + "/.glink-ignore")
 
@@ -163,6 +171,5 @@ func ignoreList(sourcePath string) []string {
 		_ = line // GET the line string
 	}
 
-	// TODO implement ignore list
 	return make([]string, 0)
 }
