@@ -7,6 +7,7 @@ import (
 	"io"
 	"io/fs"
 	"os"
+	"path/filepath"
 
 	cli "github.com/urfave/cli/v2"
 	"github.com/waldirborbajr/glink/internal/util"
@@ -40,51 +41,59 @@ func createSymlink() {
 	linkSourcePath := sourceLinkPath()
 
 	// TODO: implement logic to ignore files and directories
-	ignoreList(linkSourcePath)
+	// ignoreList(linkSourcePath)
 
 	filesToLink := listFilestoLink(linkSourcePath)
 
 	for _, file := range filesToLink {
 
+		fileName := file.Name()
+
 		// ignoring the .glink-ignore file
-		if file.Name() == ".glink-ignore" || file.Name() == "glink-ignore" {
+		if file.Name() == ".glink-ignore" || fileName == "glink-ignore" {
 			continue
 		}
 
-		// If it is a directory, must validate if exists on target
-		// Existing must enter into and create symlink from the content inside
-		// Not existing, create directory as symlink
-		if isDirectory(file.Name()) {
+		// Check if the file is a directory and has content
+		if isDirectory(fileName) {
+			if !hasContent(fileName) {
+				continue
+			}
 
-			newUserHomeDirectory := userHomeDir + "/" + file.Name()
+			newUserHomeDirectory := userHomeDir + "/" + fileName
 
 			if isTargetExists(newUserHomeDirectory) {
 
-				newSourcePath := sourceLinkPath() + "/" + file.Name()
+				newSourcePath := fileName
 
-				filesFromDiretory := listFilestoLink(newSourcePath)
+				pwd, _ := os.Getwd()
+				filesIntoDiretory := listFilestoLink(pwd + "/" + newSourcePath)
 
-				for _, file := range filesFromDiretory {
-					if !isTargetExists(newUserHomeDirectory + "/" + file.Name()) {
-						if err := makeSymlink(newSourcePath+"/"+file.Name(), newUserHomeDirectory+"/"+file.Name()); err != nil {
+				for _, fileIntoDirectory := range filesIntoDiretory {
+					fileFromDiretory := fileIntoDirectory.Name()
+
+					if !isTargetExists(newUserHomeDirectory + "/" + fileFromDiretory) {
+
+						pwd, _ := os.Getwd()
+						os.Chdir(newUserHomeDirectory)
+						if err := makeSymlink("../"+filepath.Base(pwd)+"/"+fileName+"/"+fileFromDiretory, fileFromDiretory); err != nil {
 							util.ExitWithError("Error creating symlink", err)
 						}
+						os.Chdir(pwd)
 					}
 				}
-
 			} else {
-				if err := makeSymlink(linkSourcePath+"/"+file.Name(), userHomeDir+"/"+file.Name()); err != nil {
+				if err := makeSymlink(linkSourcePath+"/"+fileName, userHomeDir+"/"+fileName); err != nil {
 					util.ExitWithError("Error creating symlink", err)
 				}
 			}
 			continue
-		}
 
-		// TODO: implement check is alredy exists symlink. If exists, bypass
-
-		if !isTargetExists(userHomeDir + "/" + file.Name()) {
-			if err := makeSymlink(linkSourcePath+"/"+file.Name(), userHomeDir+"/"+file.Name()); err != nil {
-				util.ExitWithError("Error creating symlink", err)
+		} else {
+			if !isTargetExists(userHomeDir + "/" + fileName) {
+				if err := makeSymlink(linkSourcePath+"/"+fileName, userHomeDir+"/"+fileName); err != nil {
+					util.ExitWithError("Error creating symlink", err)
+				}
 			}
 		}
 	}
@@ -101,6 +110,16 @@ func isDirectory(path string) bool {
 	fileInfo, _ := os.Stat(path)
 
 	return fileInfo.IsDir()
+}
+
+// hasContent determines if a directory has content to be created as a symlink
+func hasContent(path string) bool {
+	contents, err := os.ReadDir(path)
+	if err != nil {
+		return false
+	}
+
+	return len(contents) != 0
 }
 
 // Validate if diretory exists on target symlink
@@ -126,6 +145,8 @@ func sourceLinkPath() string {
 	if err != nil {
 		util.ExitWithError("Unable to get current directory", err)
 	}
+
+	// linkSourcePath = filepath.Base(linkSourcePath)
 
 	return linkSourcePath
 }
