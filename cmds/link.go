@@ -4,10 +4,10 @@ import (
 	"bufio"
 	"errors"
 	"fmt"
-	"io"
 	"io/fs"
 	"os"
 	"path/filepath"
+	"strings"
 
 	cli "github.com/urfave/cli/v2"
 	"github.com/waldirborbajr/glink/internal/util"
@@ -40,8 +40,12 @@ func createSymlink() {
 
 	linkSourcePath := sourceLinkPath()
 
-	// TODO: implement logic to ignore files and directories
-	// ignoreList(linkSourcePath)
+	// Load ignore patterns from .ignore file
+	ignorePatterns, err := loadIgnorePatterns(linkSourcePath)
+	if err != nil {
+		fmt.Println("Error loading ignore patterns:", err)
+		return
+	}
 
 	filesToLink := listFilestoLink(linkSourcePath)
 
@@ -51,6 +55,11 @@ func createSymlink() {
 
 		// ignoring the .glink-ignore file
 		if file.Name() == ".glink-ignore" || fileName == "glink-ignore" {
+			continue
+		}
+
+		if isIgnored(fileName, ignorePatterns) {
+			fmt.Printf("Ignoring file: %s\n", fileName)
 			continue
 		}
 
@@ -161,36 +170,42 @@ func listFilestoLink(sourcePath string) []fs.DirEntry {
 	return files
 }
 
-// TODO: implement ignore list
-// Do not create symlink from .glink-ignore
-func ignoreList(sourcePath string) []string {
+// loadIgnorePatterns loads patterns from an ignore file.
+func loadIgnorePatterns(sourcePath string) (map[string]struct{}, error) {
+	patterns := make(map[string]struct{})
+
 	_, err := os.Stat(sourcePath + "/.glink-ignore")
 
 	if errors.Is(err, os.ErrNotExist) {
-		return make([]string, 0)
+		return nil, err
 	}
 
 	ignoreFile := sourcePath + "/.glink-ignore"
 
-	fileToIgnore, err := os.OpenFile(ignoreFile, os.O_RDONLY, os.ModePerm)
+	file, err := os.Open(ignoreFile)
 	if err != nil {
-		util.ExitWithError("Unable to read .glink-ignore file", err)
+		return nil, err
 	}
+	defer file.Close()
 
-	defer fileToIgnore.Close()
-
-	content := bufio.NewReader(fileToIgnore)
-	for {
-		line, err := content.ReadString('\n')
-		if err != nil {
-			if err == io.EOF {
-				break
-			}
-
-			util.ExitWithError("read file line error: %v", err)
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		line := strings.TrimSpace(scanner.Text())
+		if line != "" && !strings.HasPrefix(line, "#") {
+			patterns[line] = struct{}{}
 		}
-		_ = line // GET the line string
 	}
 
-	return make([]string, 0)
+	if err := scanner.Err(); err != nil {
+		return nil, err
+	}
+
+	return patterns, nil
+}
+
+// isIgnored checks if the file matches any ignore pattern.
+func isIgnored(path string, ignorePatterns map[string]struct{}) bool {
+	filename := filepath.Base(path)
+	_, ignored := ignorePatterns[filename]
+	return ignored
 }
