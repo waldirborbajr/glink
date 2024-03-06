@@ -15,11 +15,14 @@ clean: ## ♻️  Clean up
 lint-fix: ## 🔍 Lint & format, will try to fix errors and modify code
 	golangci-lint run --modules-download-mode=mod *.go --fix
 
-install: ## Install into GOBIN directory 
+install: ## Install into GOBIN directory
 	go install ./...
 
 test: ## 📝 Run all tests
 	go test ./...
 
-layout: ## 💻 Run Zellij with a layout  
+snap:
+	goreleaser release --snapshot
+
+layout: ## 💻 Run Zellij with a layout
 	zellij --layout go-layout.kdl
