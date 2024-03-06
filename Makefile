@@ -22,6 +22,7 @@ test: ## 📝 Run all tests
 	go test ./...
 
 snap:
+	@rm -rf dist/
 	goreleaser release --snapshot
 
 layout: ## 💻 Run Zellij with a layout
