@@ -59,6 +59,4 @@ brews:
     commit_author:
       name: goreleaser-bot
       email: bot@goreleaser.com
-    dependencies:
-      - tmux
-      - zoxide
+
