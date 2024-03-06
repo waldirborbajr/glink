@@ -92,7 +92,7 @@ func createSymlink() {
 					}
 				}
 			} else {
-				if err := makeSymlink(linkSourcePath+"/"+fileName, userHomeDir+"/"+fileName); err != nil {
+				if err := makeSymlink(filepath.Base(linkSourcePath)+"/"+fileName, userHomeDir+"/"+fileName); err != nil {
 					util.ExitWithError("Error creating symlink", err)
 				}
 			}
@@ -100,7 +100,7 @@ func createSymlink() {
 
 		} else {
 			if !isTargetExists(userHomeDir + "/" + fileName) {
-				if err := makeSymlink(linkSourcePath+"/"+fileName, userHomeDir+"/"+fileName); err != nil {
+				if err := makeSymlink(filepath.Base(linkSourcePath)+"/"+fileName, userHomeDir+"/"+fileName); err != nil {
 					util.ExitWithError("Error creating symlink", err)
 				}
 			}
@@ -177,7 +177,7 @@ func loadIgnorePatterns(sourcePath string) (map[string]struct{}, error) {
 	_, err := os.Stat(sourcePath + "/.glink-ignore")
 
 	if errors.Is(err, os.ErrNotExist) {
-		return nil, err
+		return nil, nil
 	}
 
 	ignoreFile := sourcePath + "/.glink-ignore"
