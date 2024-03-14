@@ -13,6 +13,7 @@ import (
 	"github.com/waldirborbajr/glink/internal/util"
 )
 
+// Link Command create symlinks
 func Link() *cli.Command {
 	return &cli.Command{
 		Name:                   "link",
@@ -26,7 +27,7 @@ func Link() *cli.Command {
 				Usage:   "force overwrite symlinkl",
 			},
 		},
-		Action: func(cCtx *cli.Context) error {
+		Action: func(_ *cli.Context) error {
 			createSymlink()
 			fmt.Println("symlinks created")
 			return nil
@@ -50,7 +51,6 @@ func createSymlink() {
 	filesToLink := listFilestoLink(linkSourcePath)
 
 	for _, file := range filesToLink {
-
 		fileName := file.Name()
 
 		// ignoring the .glink-ignore file
@@ -59,7 +59,6 @@ func createSymlink() {
 		}
 
 		if isIgnored(fileName, ignorePatterns) {
-			fmt.Printf("Ignoring file: %s\n", fileName)
 			continue
 		}
 
@@ -72,7 +71,6 @@ func createSymlink() {
 			newUserHomeDirectory := userHomeDir + "/" + fileName
 
 			if isTargetExists(newUserHomeDirectory) {
-
 				newSourcePath := fileName
 
 				pwd, _ := os.Getwd()
@@ -82,13 +80,12 @@ func createSymlink() {
 					fileFromDiretory := fileIntoDirectory.Name()
 
 					if !isTargetExists(newUserHomeDirectory + "/" + fileFromDiretory) {
-
 						pwd, _ := os.Getwd()
-						os.Chdir(newUserHomeDirectory)
+						_ = os.Chdir(newUserHomeDirectory)
 						if err := makeSymlink("../"+filepath.Base(pwd)+"/"+fileName+"/"+fileFromDiretory, fileFromDiretory); err != nil {
 							util.ExitWithError("Error creating symlink", err)
 						}
-						os.Chdir(pwd)
+						_ = os.Chdir(pwd)
 					}
 				}
 			} else {
@@ -96,8 +93,7 @@ func createSymlink() {
 					util.ExitWithError("Error creating symlink", err)
 				}
 			}
-			continue
-
+			// continue
 		} else {
 			if !isTargetExists(userHomeDir + "/" + fileName) {
 				if err := makeSymlink(filepath.Base(linkSourcePath)+"/"+fileName, userHomeDir+"/"+fileName); err != nil {
@@ -186,7 +182,10 @@ func loadIgnorePatterns(sourcePath string) (map[string]struct{}, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer file.Close()
+
+	defer func() {
+		_ = file.Close()
+	}()
 
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
