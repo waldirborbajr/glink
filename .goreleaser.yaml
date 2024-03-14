@@ -33,9 +33,9 @@ archives:
       {{- else }}{{ .Arch }}{{ end }}
       {{- if .Arm }}v{{ .Arm }}{{ end }}
     # use zip for windows archives
-    format_overrides:
-      - goos: windows
-        format: zip
+    # format_overrides:
+    #   - goos: windows
+    #     format: zip
 
 changelog:
   sort: asc
@@ -44,17 +44,17 @@ changelog:
       - "^docs:"
       - "^test:"
 
-brews:
-  - name: glink
-    homepage: "https://github.com/waldirborbajr/glink"
-    description: "Smart terminal session manager"
-    license: "MIT"
-    url_template: "https://github.com/waldirborbajr/glink/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
-    commit_msg_template: "Brew formula update for {{ .ProjectName }} version {{ .Tag }}"
-    repository:
-      owner: waldirborbajr
-      name: homebrew-glink
-      branch: main
-    commit_author:
-      name: goreleaser-bot
-      email: bot@goreleaser.com
+# brews:
+#   - name: glink
+#     homepage: "https://github.com/waldirborbajr/glink"
+#     description: "Smart terminal session manager"
+#     license: "MIT"
+#     url_template: "https://github.com/waldirborbajr/glink/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
+#     commit_msg_template: "Brew formula update for {{ .ProjectName }} version {{ .Tag }}"
+#     repository:
+#       owner: waldirborbajr
+#       name: homebrew-glink
+#       branch: main
+#     commit_author:
+#       name: goreleaser-bot
+#       email: bot@goreleaser.com
