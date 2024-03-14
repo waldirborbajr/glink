@@ -11,10 +11,11 @@ help: ## 💬 This help message :)
 
 build: ## 🔨 Build development binaries for Linux
 	@go mod tidy
-	GOOS=linux go build -o bin/${artifact_name} $(LDFLAGS) $(GCFLAGS) -debug-trace=tmp/trace.json main.go
+	GOOS=linux go build -o bin/$(ARTIFACT_NAME) $(LDFLAGS) $(GCFLAGS) -debug-trace=tmp/trace.json main.go
 
 clean: ## ♻️  Clean up
 	@rm -rf bin
+	@rm $(GOBNI)/$(ARTIFACT_NAME)
 
 lint-fix: ## 🔍 Lint & format, will try to fix errors and modify code
 	golangci-lint --version
