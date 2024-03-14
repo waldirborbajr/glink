@@ -26,7 +26,8 @@ jobs:
       - name: Install deps
         run: go install github.com/jstemmer/go-junit-report/v2@latest
       - name: Run tests
-        run: go test -cover -bench=. -benchmem -race -v 2>&1 ./... | go-junit-report -set-exit-code > report.xml
+        run: go test -v -race ./... -coverprofile=coverage.txt -covermode=atomic -timeout=90s
+        # run: go test -cover -bench=. -benchmem -race -v 2>&1 ./... | go-junit-report -set-exit-code > report.xml
       # - name: Test Summary
       #   uses: test-summary/action@v2
       #   with:
