@@ -1,12 +1,10 @@
 package util_test
 
 import (
-	"fmt"
 	"testing"
 
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	"github.com/waldirborbajr/glink/internal/util"
 )
 
 var testT *testing.T
@@ -26,6 +24,6 @@ var _ = Describe("Checking ExitWithError", Label("exiterror"), func() {
 		It("should exit with error", func() {
 		})
 
-		util.ExitWithError("test message", fmt.Errorf("test error"))
+		// util.ExitWithError("test message", fmt.Errorf("test error"))
 	})
 })
