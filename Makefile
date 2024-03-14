@@ -19,7 +19,7 @@ clean: ## ♻️  Clean up
 
 lint: ## 🔍 Lint & format, will try to fix errors and modify code
 	golangci-lint --version
-	GOMEMLIMIT=1024MiB @golangci-lint run -v --modules-download-mode=mod *.go --fix
+	GOMEMLIMIT=1024MiB golangci-lint run -v --modules-download-mode=mod *.go --fix
 
 install: ## Install into GOBIN directory
 	@go install ./...
