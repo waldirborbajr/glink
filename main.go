@@ -7,13 +7,11 @@ import (
 	"github.com/waldirborbajr/glink/glinkcli"
 )
 
-var (
-	version  = "0.1.0"
-	revision = "dev"
-)
+// BuildVersion is provided to be overridden at build time. Eg. go build -ldflags -X 'main.BuildVersion=...'
+var BuildVersion = "(development build)"
 
 func main() {
-	app := glinkcli.App(version, revision)
+	app := glinkcli.App(BuildVersion)
 	if err := app.Run(os.Args); err != nil {
 		log.Fatal(err)
 	}
