@@ -17,7 +17,7 @@ clean: ## ♻️  Clean up
 	@rm -rf bin
 	@rm $(GOBIN)/$(ARTIFACT_NAME)
 
-lint-fix: ## 🔍 Lint & format, will try to fix errors and modify code
+lint: ## 🔍 Lint & format, will try to fix errors and modify code
 	golangci-lint --version
 	GOMEMLIMIT=1024MiB @golangci-lint run -v --modules-download-mode=mod *.go --fix
 
