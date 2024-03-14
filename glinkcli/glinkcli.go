@@ -5,8 +5,8 @@ import (
 	"github.com/waldirborbajr/glink/cmds"
 )
 
+// App returns the Glink CLI application
 func App(version string) cli.App {
-	// TODO: implement
 	return cli.App{
 		Name:    "glink",
 		Version: version,

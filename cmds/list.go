@@ -4,6 +4,7 @@ import (
 	cli "github.com/urfave/cli/v2"
 )
 
+// List returns a cli.Command for the list subcommand
 func List() *cli.Command {
 	return &cli.Command{
 		Name:                   "list",
@@ -37,7 +38,7 @@ func List() *cli.Command {
 				Usage:   "show Nerd Font icons",
 			},
 		},
-		Action: func(cCtx *cli.Context) error {
+		Action: func(_ *cli.Context) error {
 			return nil
 		},
 	}
