@@ -5,7 +5,7 @@ import (
 	"github.com/waldirborbajr/glink/cmds"
 )
 
-func App(version string, revision string) cli.App {
+func App(version string) cli.App {
 	// TODO: implement
 	return cli.App{
 		Name:    "glink",
@@ -16,7 +16,7 @@ func App(version string, revision string) cli.App {
 			cmds.Link(),
 			// cmds.Remove(),
 			// cmds.Ignore(),
-			cmds.Version(revision),
+			cmds.Version(),
 		},
 	}
 }
