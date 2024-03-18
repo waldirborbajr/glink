@@ -16,6 +16,8 @@ build: ## 🔨 Build development binaries for Linux
 clean: ## ♻️  Clean up
 	@rm -rf bin
 	@rm $(GOBIN)/$(ARTIFACT_NAME)
+	go clean -modcache
+	go clean --cache
 
 lint: ## 🔍 Lint & format, will try to fix errors and modify code
 	golangci-lint --version
