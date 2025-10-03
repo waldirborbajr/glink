@@ -1,6 +1,6 @@
 module github.com/waldirborbajr/glink
 
-go 1.22.0
+go 1.25
 
 require (
 	github.com/onsi/ginkgo/v2 v2.16.0
