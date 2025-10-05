@@ -14,7 +14,7 @@ func App(version string) cli.App {
 		Commands: []*cli.Command{
 			cmds.List(),
 			cmds.Link(),
-			// cmds.Remove(),
+			cmds.Remove(),
 			// cmds.Ignore(),
 			cmds.Version(),
 		},
