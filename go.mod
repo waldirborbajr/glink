@@ -3,7 +3,7 @@ module github.com/waldirborbajr/glink
 go 1.25
 
 require (
-	github.com/onsi/ginkgo/v2 v2.26.0
+	github.com/onsi/ginkgo/v2 v2.27.5
 	github.com/onsi/gomega v1.38.2
 	github.com/urfave/cli/v2 v2.27.7
 )
@@ -11,7 +11,6 @@ require (
 require (
 	github.com/Masterminds/semver/v3 v3.4.0 // indirect
 	github.com/go-task/slim-sprig/v3 v3.0.0 // indirect
-	go.uber.org/automaxprocs v1.6.0 // indirect
 	golang.org/x/mod v0.27.0 // indirect
 	golang.org/x/sync v0.16.0 // indirect
 )
